@@ -1,125 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 台北市長選戰：AI 智慧政見與互動對照平台</title>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #0f172a;
-            font-size: 24px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-        }
-        h2 {
-            font-size: 18px;
-            color: #334155;
-            margin-top: 20px;
-        }
-        .candidate-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 15px;
-        }
-        @media (max-width: 600px) {
-            .candidate-grid { grid-template-columns: 1fr; }
-        }
-        .card {
-            background: #f1f5f9;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 5px solid var(--primary-color);
-        }
-        .interactive-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #eff6ff;
-            border-radius: 8px;
-            border: 1px solid #bfdbfe;
-        }
-        .result-box {
-            margin-top: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            min-height: 60px;
-        }
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        button:hover {
-            background-color: #1d4ed8;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>⚡ 2026 台北市長選戰：AI 智慧政見與互動對照平台</h1>
-    <p>歡迎來到選情分析平台！本專題結合時事熱話、政見對照與 Gemini API 技術，帶您深入剖析選戰焦點。</p>
-
-    <h2>👥 主要參選陣營與核心動態</h2>
-    <div class="candidate-grid">
-        <div class="card">
-            <h3 style="margin-top:0; color:#1e40af;">蔣萬安 (國民黨 / 現任)</h3>
-            <p><strong>陣營動態：</strong>主打穩健施政與首都防線（結合盧秀燕接任競總主委）。</p>
-            <p><strong>重點政見：</strong>交通優化、城市韌性、育兒補助與松機遷建相關政策。</p>
-        </div>
-        <div class="card" style="border-left-color: #047857;">
-            <h3 style="margin-top:0; color:#047857;">沈伯洋 (民進黨)</h3>
-            <p><strong>陣營動態：</strong>密集掃街，掀起強大「洋流」旋風。</p>
-            <p><strong>重點政見：</strong>民防強化、公共托育升級（如臨托政策）及公共空間改革。</p>
-        </div>
-    </div>
-
-    <!-- 互動式提問與 Gemini API 串接 -->
-    <div class="interactive-box">
-        <h2 style="margin-top:0; color:#1e3a8a;">🤖 自由提問與 Gemini API 即時分析</h2>
-        <p>請輸入您想了解的選情或時事問題（例如：「預估沈伯洋10/18車流人數」、「兩位候選人政策差異」）：</p>
-        
-        <div style="display: flex; gap: 10px; margin: 15px 0;">
-            <input type="text" id="userQuestion" placeholder="輸入您的選情問題..." style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
-            <button onclick="askAI()">送出提問</button>
-        </div>
-
-        <div class="result-box" id="aiResult">
-            <em>👉 輸入問題並點擊送出，Gemini AI 將為您即時運算分析結果...</em>
-        </div>
-    </div>
-</div>
-
 <script>
-    // ⚠️ 請在這裡填入您的 Gemini API Key（請確保金鑰字串用單引號包起來）
+    // 請確認您的真實 API Key (前後用單引號包好，不要有多餘空白)
     const GEMINI_API_KEY = 'AQ.Ab8RN6K0dU3VaXb73gw_H7IJbtRxgQtvTvFK_boCcatxLnc0mg'; 
 
     async function askAI() {
@@ -131,22 +11,16 @@
             return;
         }
 
-        if (GEMINI_API_KEY === 'AQ.Ab8RN6K0dU3VaXb73gw_H7IJbtRxgQtvTvFK_boCcatxLnc0mg' || !GEMINI_API_KEY) {
-            resultBox.innerHTML = "<span style='color: red;'>請先在程式碼中填入您的 Gemini API Key 才能使用即時分析！</span>";
-            return;
-        }
+        resultBox.innerHTML = "<em>⏳ Gemini AI 正在即時運算中，請稍候...</em>";
 
-        resultBox.innerHTML = "<em>⏳ Gemini AI 正在結合即時選情與時事運算中，請稍候...</em>";
-
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${GEMINI_API_KEY}`;
+        // 改用 gemini-1.5-flash 確保相容性
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
         const promptText = `
             你是一個專業的 2026 台北市長選戰 AI 智慧分析助理。
-            參選背景：
-            1. 蔣萬安（國民黨/現任，主打穩健施政、首都防線、交通與城市韌性；盧秀燕接任競總主委）。
-            2. 沈伯洋（民進黨，主打民防強化、公共托育、車隊掃街掀起「大洋流」旋風）。
-            
-            請針對使用者提出的問題：「${question}」，根據上述選情背景，給出專業、客觀且具深度的即時分析回應。
+            蔣萬安（國民黨/現任，主打穩健施政、首都防線、交通與城市韌性）。
+            沈伯洋（民進黨，主打民防強化、公共托育、車隊掃街掀起「大洋流」旋風）。
+            請針對使用者提出的問題：「${question}」，給出專業、客觀的分析回應。
         `;
 
         try {
@@ -165,14 +39,12 @@
                 aiReply = aiReply.replace(/\n/g, '<br>');
                 resultBox.innerHTML = `<strong>【Gemini API 即時智慧分析】</strong><br>${aiReply}`;
             } else {
-                resultBox.innerHTML = "<span style='color: red;'>無法取得 AI 回應，請檢查 API Key 是否正確。</span>";
+                console.error(data);
+                resultBox.innerHTML = "<span style='color: red;'>無法取得 AI 回應，請檢查 API Key 是否正確或權限是否開通。</span>";
             }
         } catch (error) {
             console.error(error);
-            resultBox.innerHTML = "<span style='color: red;'>連線至 Gemini API 發生錯誤，請稍後再試。</span>";
+            resultBox.innerHTML = "<span style='color: red;'>連線至 Gemini API 發生錯誤。</span>";
         }
     }
 </script>
-
-</body>
-</html>
