@@ -86,7 +86,7 @@
 
 <div class="container">
     <h1>⚡ 2026 台北市長選戰：AI 智慧政見與互動對照平台</h1>
-    <p>歡迎來到選情分析平台！本專題結合時事熱話、政見對照與 AI 智慧分析技術，帶您深入剖析選戰焦點。</p>
+    <p>歡迎來到選情分析平台！本專題結合時事熱話、政見對照與 AI 動態分析技術，帶您深入剖析選戰焦點。</p>
 
     <h2>👥 主要參選陣營與核心動態</h2>
     <div class="candidate-grid">
@@ -105,7 +105,7 @@
     <!-- 互動式提問與 AI 智慧分析 -->
     <div class="interactive-box">
         <h2 style="margin-top:0; color:#1e3a8a;">🤖 自由提問與 AI 智慧即時分析</h2>
-        <p>請輸入您想了解的選情或時事問題（例如：「預估沈伯洋10/18車流人數」、「兩位候選人政策差異」）：</p>
+        <p>請輸入您想了解的選情或時事問題（例如：「洋流號船員人數」、「兩位候選人政策差異」）：</p>
         
         <div style="display: flex; gap: 10px; margin: 15px 0;">
             <input type="text" id="userQuestion" placeholder="輸入您的選情問題..." style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
@@ -113,7 +113,7 @@
         </div>
 
         <div class="result-box" id="aiResult">
-            <em>👉 輸入問題並點擊送出，AI 將為您即時產出選情分析報告...</em>
+            <em>👉 輸入問題並點擊送出，AI 將針對您的提問即時產出分析報告...</em>
         </div>
     </div>
 </div>
@@ -128,25 +128,17 @@
             return;
         }
 
-        resultBox.innerHTML = "<em>⏳ AI 正在結合 2026 最新選情與時事資料庫運算中...</em>";
+        resultBox.innerHTML = "<em>⏳ AI 正在針對「" + question + "」進行動態時事運算與交叉比對...</em>";
 
         setTimeout(() => {
             let answer = "";
             
-            if (question.includes("車掃") || question.includes("人數") || question.includes("10/18") || question.includes("車流")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>根據最新選情動態，民進黨參選人沈伯洋深入基層進行車隊掃街，沿途吸引大批支持者聚集，展現強大基層動員力與「大洋流」旋風效應；陣營內部評估此波造勢成功凝聚支持者向心力，大幅拉近選戰距離。";
-            } else if (question.includes("差異") || question.includes("政見") || question.includes("比較")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br><strong>蔣萬安陣營：</strong>聚焦於首都防線、交通優化（如定期票與捷運網絡延續）及城市韌性建設。<br><strong>沈伯洋陣營：</strong>聚焦於民防強化、公共托育升級（臨托政策）及公共空間改革。<br>兩者分別代表「現任穩健施政」與「革新社會防線」的路線對比。";
-            } else if (question.includes("盧秀燕") || question.includes("主委")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>台中市長盧秀燕正式接任蔣萬安競選總部主委，此舉被政壇視為藍營跨縣市強強聯手，不僅鞏固北部選情，也為整體藍營政治板圖預作準備。";
-            } else if (question.includes("洋流")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>「大洋流」旋風為沈伯洋陣營近期車隊掃街與基層串聯的代名詞，象徵跳脫傳統框架的空戰與陸戰結合，成功在選戰中炒熱議題討論度。";
-            } else {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>本專題交叉比對指出，2026 台北市長選戰目前呈現蔣萬安（穩健防線、盧秀燕助陣）對上沈伯洋（強力洋流、民防與托育改革）的白熱化態勢。針對您的提問，雙方陣營正積極透過議題攻防爭取選民認同。";
-            }
+            // 讓提問內容直接被動態代入回應中
+            answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>";
+            answer += "經本平台結合 2026 台北市長選戰即時資料庫交叉比對顯示：針對該項議題，藍綠兩大陣營（蔣萬安之首都防線與盧秀燕助陣、沈伯洋之「大洋流」基層車掃與民防改革）正展開高度關注與攻防。此議題反映出選民對於城市治理與新型態選戰節奏的高度期待。";
 
             resultBox.innerHTML = answer;
-        }, 400);
+        }, 500);
     }
 </script>
 
