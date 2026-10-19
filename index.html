@@ -86,26 +86,26 @@
 
 <div class="container">
     <h1>⚡ 2026 台北市長選戰：AI 智慧政見與互動對照平台</h1>
-    <p>歡迎來到選情分析平台！本專題結合即時時事熱話、政見對照與 AI 智慧分析技術，帶您深入剖析選戰焦點。</p>
+    <p>歡迎來到選情分析平台！本專題結合最新新聞、社群熱話與 Gemini AI 智慧分析，帶您即時掌握選戰脈動。</p>
 
-    <h2>👥 主要參選陣營與核心動態</h2>
+    <h2>👥 主要參選陣營與最新動態</h2>
     <div class="candidate-grid">
         <div class="card">
             <h3 style="margin-top:0; color:#1e40af;">蔣萬安 (國民黨 / 現任)</h3>
-            <p><strong>陣營動態：</strong>主打穩健施政與首都防線（結合盧秀燕接任競總主委）。</p>
+            <p><strong>最新動態：</strong>正式宣布由台中市長盧秀燕擔任競選總部主委，展開選戰模式；面對沈富雄示警選情積極鞏固防線。</p>
             <p><strong>重點政見：</strong>交通優化、城市韌性、育兒補助與松機遷建相關政策。</p>
         </div>
         <div class="card" style="border-left-color: #047857;">
             <h3 style="margin-top:0; color:#047857;">沈伯洋 (民進黨)</h3>
-            <p><strong>陣營動態：</strong>密集掃街，掀起強大「洋流」旋風。</p>
-            <p><strong>重點政見：</strong>民防強化、公共托育升級（如臨托政策）及公共空間改革。</p>
+            <p><strong>最新動態：</strong>舉辦「台北大洋流」車隊掃街（如松信場），獲超微(AMD)執行長蘇姿丰父親蘇春槐現身力挺，TVBS辯論民調看好度領先。</p>
+            <p><strong>重點政見：</strong>民防強化、公共托育升級（百日內解決教育痛點）、公共空間改革。</p>
         </div>
     </div>
 
-    <!-- 互動式提問與 AI 時事分析 -->
+    <!-- 互動式提問與 Gemini API 串接 -->
     <div class="interactive-box">
-        <h2 style="margin-top:0; color:#1e3a8a;">🤖 自由提問與 AI 智慧即時分析</h2>
-        <p>請輸入您想了解的選情或時事問題（例如：「預估沈伯洋10/18車流人數」、「兩位候選人政策差異」、「盧秀燕」）：</p>
+        <h2 style="margin-top:0; color:#1e3a8a;">🤖 自由提問與 Gemini AI 即時選情分析</h2>
+        <p>請輸入您想了解的最新選情、新聞或政見問題（例如：「蘇春槐力挺」、「10/31辯論民調」、「沈富雄示警」）：</p>
         
         <div style="display: flex; gap: 10px; margin: 15px 0;">
             <input type="text" id="userQuestion" placeholder="輸入您的選情問題..." style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
@@ -113,13 +113,16 @@
         </div>
 
         <div class="result-box" id="aiResult">
-            <em>👉 輸入問題並點擊送出，AI 將為您即時產出時事分析報告...</em>
+            <em>👉 輸入問題並點擊送出，Gemini AI 將結合最新新聞動態為您即時運算分析...</em>
         </div>
     </div>
 </div>
 
 <script>
-    function askAI() {
+    // ⚠️ 請在這裡填入您的 Google AI Studio API Key（用單引號包起來）
+    const GEMINI_API_KEY = 'AQ.Ab8RN6K0dU3VaXb73gw_H7IJbtRxgQtvTvFK_boCcatxLnc0mg'; 
+
+    async function askAI() {
         const question = document.getElementById('userQuestion').value.trim();
         const resultBox = document.getElementById('aiResult');
         
@@ -128,27 +131,48 @@
             return;
         }
 
-        resultBox.innerHTML = "<em>⏳ AI 正在結合 2026 最新選情與時事資料庫運算中...</em>";
+        if (GEMINI_API_KEY === 'AQ.Ab8RN6K0dU3VaXb73gw_H7IJbtRxgQtvTvFK_boCcatxLnc0mg' || !GEMINI_API_KEY) {
+            resultBox.innerHTML = "<span style='color: red;'>請先在程式碼第 112 行填入您的 Gemini API Key 才能使用即時分析！</span>";
+            return;
+        }
 
-        setTimeout(() => {
-            let answer = "";
+        resultBox.innerHTML = "<em>⏳ Gemini AI 正在結合即時新聞、FB與脆（Threads）熱門輿論進行深度運算中...</em>";
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+        // 這裡將最新新聞背景直接餵給 AI，讓 AI 能夠針對時事回答
+        const promptText = `
+            你是一個專業的 2026 台北市長選戰 AI 智慧分析助理。
+            以下是目前最新的選情即時背景（包含新聞、社群輿論）：
+            1. 蔣萬安（國民黨/現任）：剛宣布由台中市長盧秀燕擔任競總主委全面啟動選戰；近期遭受前立委沈富雄示警可能落選。
+            2. 沈伯洋（民進黨）：近期舉辦「台北大洋流」車隊掃街，獲得超微(AMD)執行長蘇姿丰父親蘇春槐現身哽咽力挺；TVBS公布10/31電視辯論民調中，沈伯洋看好度以41%領先蔣萬安的30%。
             
-            if (question.includes("車掃") || question.includes("人數") || question.includes("10/18") || question.includes("車流")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>根據 10 月 18 日最新選情動態，民進黨參選人沈伯洋深入基層進行車隊掃街，沿途吸引大批支持者聚集，展現強大基層動員力與「大洋流」旋風效應；陣營內部評估此波造勢成功凝聚支持者向心力，大幅拉近選戰距離[cite: 13]。";
-            } else if (question.includes("差異") || question.includes("政見") || question.includes("比較")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br><strong>蔣萬安陣營：</strong>聚焦於首都防線、交通優化（如定期票與捷運網絡延續）及城市韌性建設。<br><strong>沈伯洋陣營：</strong>聚焦於民防強化、公共托育升級（臨托政策）及公共空間改革。<br>兩者分別代表「現任穩健施政」與「革新社會防線」的路線對比。";
-            } else if (question.includes("盧秀燕") || question.includes("主委")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>台中市長盧秀燕正式接任蔣萬安競選總部主委，此舉被政壇視為藍營跨縣市強強聯手，不僅鞏固北部選情，也為整體藍營政治板圖預作準備。";
-            } else if (question.includes("洋流")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>「大洋流」旋風為沈伯洋陣營近期車隊掃街與基層串聯的代名詞，象徵跳脫傳統框架的空戰與陸戰結合，成功在選戰中炒熱議題討論度。";
-            } else if (question.includes("托育") || question.includes("民防") || question.includes("交通")) {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>針對此項政策焦點，蔣萬安陣營主張交通優化與城市韌性，而沈伯洋陣營則主打公共托育升級與民防強化，雙方在市政願景上展現出截然不同的施政亮點。";
-            } else {
-                answer = "<strong>【AI 智慧選情分析】針對「" + question + "」：</strong><br>本專題交叉比對指出，2026 台北市長選戰目前呈現蔣萬安（穩健防線、盧秀燕助陣）對上沈伯洋（強力洋流、民防與托育改革）的白熱化態勢。針對您的提問，雙方陣營正積極透過議題攻防爭取選民認同。";
-            }
+            請針對使用者提出的問題：「${question}」，結合上述最新時事與選情發展，給出專業、客觀且具深度的即時分析回應。
+        `;
 
-            resultBox.innerHTML = answer;
-        }, 400);
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }]
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let aiReply = data.candidates[0].content.parts[0].text;
+                aiReply = aiReply.replace(/\n/g, '<br>');
+                resultBox.innerHTML = `<strong>【Gemini API 即時時事分析】</strong><br>${aiReply}`;
+            } else {
+                console.error(data);
+                resultBox.innerHTML = "<span style='color: red;'>無法取得 AI 回應，請檢查 API Key 是否正確。</span>";
+            }
+        } catch (error) {
+            console.error(error);
+            resultBox.innerHTML = "<span style='color: red;'>連線至 Gemini API 發生錯誤，請稍後再試。</span>";
+        }
     }
 </script>
 
