@@ -1,8 +1,75 @@
-<!-- 官方 LINE 連結與最新動態區塊 -->
-<div class="card" style="margin-top: 20px; border-left-color: #047857; background: #f0fdf4;">
-    <h3 style="margin-top:0; color:#047857;">💬 沈伯洋參選官方 LINE 互動專區</h3>
-    <p>想隨時掌握最新選情、破解謠言或傳遞市政建言？歡迎加入沈伯洋官方 LINE 帳號：</p>
-    <a href="https://page.line.me/346zegth" target="_blank" style="display: inline-block; background-color: #06c755; color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: bold;">
-        📱 點擊加入沈伯洋官方 LINE (@pumashen)
-    </a>
-</div>
+<script>
+    // 請在這裡填入您的 Gemini API Key
+    const GEMINI_API_KEY = 'AQ.Ab8RN6K0dU3VaXb73gw_H7IJbtRxgQtvTvFK_boCcatxLnc0mg'; 
+
+    async function askAI() {
+        const question = document.getElementById('userQuestion').value.trim();
+        const resultBox = document.getElementById('aiResult');
+        
+        if (!question) {
+            resultBox.innerHTML = "<span style='color: red;'>請先輸入您的問題！</span>";
+            return;
+        }
+
+        resultBox.innerHTML = "<em>⏳ Gemini AI 正在結合即時選情與時事運算中，請稍候...</em>";
+
+        // 使用 Gemini 3.8 Flash 模型 API
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+        // 設定給 AI 的角色與背景提示詞
+        const promptText = `
+            你是一個專業的 2026 台北市長選戰 AI 智慧分析助理。
+            目前參選人包含：
+            1. 蔣萬安（國民黨/現任，主打穩健施政、首都防線、交通優化與城市韌性；近期動態包含盧秀燕接任競總主委）。
+            2. 沈伯洋（民進黨，主打民防強化、公共托育升級、公共空間改革；近期動態包含密集車隊掃街、掀起「大洋流」旋風）。
+            
+            請根據使用者提出的問題：「${question}」，結合上述 2026 台北市長選戰背景與時事，給出專業、客觀且具深度的分析回應（若涉及具體未定資料，請以合理的選情趨勢進行分析）。
+        `;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: promptText }]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let aiReply = data.candidates[0].content.parts[0].text;
+                // 將換行符號轉成 HTML 標籤
+                aiReply = aiReply.replace(/\n/g, '<br>');
+                resultBox.innerHTML = `<strong>【Gemini API 即時智慧分析】</strong><br>${aiReply}`;
+            } else {
+                resultBox.innerHTML = "<span style='color: red;'>無法取得 AI 回應，請檢查 API Key 是否正確。</span>";
+            }
+        } catch (error) {
+            console.error(error);
+            resultBox.innerHTML = "<span style='color: red;'>連線至 Gemini API 發生錯誤，請稍後再試。</span>";
+        }
+    }
+
+    function downloadJSON() {
+        const data = {
+            election: "2026 Taipei Mayor Election",
+            candidates: [
+                { name: "蔣萬安", party: "國民黨", focus: ["交通優化", "城市韌性"] },
+                { name: "沈伯洋", party: "民進黨", focus: ["民防強化", "公共托育升級"] }
+            ],
+            updated_at: "2026-10-19"
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'taipei_election_2026.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
